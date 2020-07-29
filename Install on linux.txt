@@ -1,0 +1,11 @@
+https://linuxhint.com/install_mongodb_ubuntu_20_04/
+
+sudo apt update
+sudo apt upgrade
+sudo apt install mongodb
+
+sudo systemctl status mongodb - проверка статуса
+sudo systemctl start mongodb - запуск процесса
+sudo systemctl stop mongodb - остановка процесса
+
+sudo mongo - To work on the databases, you can open the “mongo shell” with the following terminal command

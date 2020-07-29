@@ -1,0 +1,51 @@
+use itproger - switched to db itproger
+
+db.createCollection("users") - create new collection (response - { "ok" : 1 })
+
+db.users.drop() - drop collection 'users'
+
+INSERT
+db.users.insertOne({"name": "Jack", "surename": "Smith", "age": 33, "hasCar": false, "favColors":["Red", "Black", "White"], "child": {"name": "Tom", "surename": "Smith", "age": 12}}) - insert one document with auto id
+db.users.insertOne({"_id": 1, "name": "Daria", "surename": "Dacota", "age": 22, "hasCar": true, "email": "dashaDac@gmail.com"}) - insert one document with id
+db.users.insertOne({"_id": 3, "name": "Sanyok", "surename": "Ziher", "age": 42, "hasCar": true, "married": true, "birthDate": new Date('1978-11-28')}) - insert one collection with Date example
+db.users.insertMany([{"_id": 4, "name": "Simon", "surename": "Horor"}, {"_id": 5, "name": "Tilda", "surename": "Firedab"}]) - insert a few collections
+
+FIND
+db.users.find() - returns all data from users
+db.users.find().limit(2) - returns 2 collections from users
+db.users.find({}, {_id: 0}) - returns all collections without _id
+db.users.find().sort({age: 1}) - //returns fields without field age then age=31,42,43,54
+db.users.find().sort({age: -1}) - //returns age= 43,41,30,18 then fields without field age
+db.users.find().sort({age: 1, name: 1}) - sort by age and name
+db.users.find({age: 22},{}) - returns collections where age = 22
+db.users.find({age: 32, name: 'Dimon'}) - returns collections where age=32 and name=Dimon
+db.users.find({$or: [{age: 33}, {name: 'Dimon'}]}) - returns collections where age=33 or name=Dimon
+db.users.find({age: {$gt: 32}}) - returns collections where age > 32
+db.users.find({age: {$lt: 34}}) - returns collections where age < 34
+db.users.find({age: {$lt: 30}, name: 'Dimon'}) - returns collections where age < 30 and name=Dimon
+db.users.find({age: {$lte: 33}}) - returns collections where age <= 33
+db.users.find({age: {$eq: 44}}) - returns collections where age = 44
+db.users.find({age: {$ne: 33}}) - returns collections where age <> 33
+db.users.find({name: {$in: ['Jack', 'Dimon']}}) - returns collections where names: Dimon or Jack
+db.users.find({age: {$nin: [22, 32, 33]}}) - returns collections where age <> 22, 32, 33
+db.users.find({child: {$exists: true}}) - returns collections where object child exists
+db.users.find({child: {$exists: false}}) - returns collections where object child not exists
+db.users.find({favColors: {$size: 3}}) - returns collections which contains array favColors with size = 3
+db.users.find({"favColors.1": "Black"}) - returns collections where first element of array (favColors) = Black
+db.users.find({"favColors": {$elemMatch: {$eq: "Black"}}}) - returns collections where array contains value = Black
+db.users.find({"zipCode": {$elemMatch: {$lt: 2000}}}) - returns collections where array contains values < 2000
+
+UPDATE
+db.users.updateOne({name: 'Dimon'}, {$set: {age: 34}}) - update first collection where name=Dimon
+db.users.updateMany({age: 23}, {$set: {age: 24}}) - update all collections where age=23
+
+REPLACE
+db.users.replaceOne({age: 33}, {name: "Roman", surename: "Moto", isJavaDeveloper: true, sex: "Male", country: "Ukraine"}) - replaced first collection where age=33 (replace all data)
+
+DELETE
+db.users.deleteOne({_id: 4}) - delete one collection where id=4
+db.users.deleteMany({}) - delete all collections
+db.users.deleteMany({age: {$lte: 40}}) - delete collections where age <=40
+db.users.deleteMany({age: {$lt: 40, $gt: 18}}) - delete all collections where age 19-39
+db.users.bulkWrite([{insertOne: {"document": {_id: 3, name: "Vovan", age: 20}}}, {deleteOne: {filter: {_id: 4}}}, {updateOne: {filter: {_id: 3}, update: {$set: {name: "Bob"}}}}, {replaceOne: {filter: {_id: 1}, replacement: {name: "Slim", age: 33}}}]) - make more than one operation
+
